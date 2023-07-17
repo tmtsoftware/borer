@@ -17,7 +17,7 @@ lazy val commonSettings = Seq(
   crossScalaVersions := Seq(scala212, scala213),
 
   scalacOptions ++= Seq(
-    "-deprecation",
+//    "-deprecation",
     "-encoding", "UTF-8",
     "-feature",
     "-language:_",
@@ -199,12 +199,14 @@ addCommandsAlias(
     "core/test",
     "derivation/test",
     "compat-akka/test",
+    "compat-pekko/test",
     "compat-cats/test",
     "compat-circe/test",
     "compat-scodec/test",
     "core/coverageReport",
     "derivation/coverageReport",
     "compat-akka/coverageReport",
+    "compat-pekko/coverageReport",
     "compat-cats/coverageReport",
     "compat-circe/coverageReport",
     "compat-scodec/coverageReport",
@@ -217,6 +219,11 @@ addCommandsAlias(
 val `akka-actor`        = Def.setting("com.typesafe.akka"      %%  "akka-actor-typed"        % "2.6.14")
 val `akka-stream`       = Def.setting("com.typesafe.akka"      %%  "akka-stream"             % "2.6.14")
 val `akka-http`         = Def.setting("com.typesafe.akka"      %%  "akka-http"               % "10.2.4")
+
+val `pekko-actor`        = Def.setting("org.apache.pekko" %%  "pekko-actor-typed"  % "1.0.0")
+val `pekko-stream`       = Def.setting("org.apache.pekko" %%  "pekko-stream"       % "1.0.0")
+val `pekko-http`         = Def.setting("org.apache.pekko" %%  "pekko-http"         % "0.0.0+4470-61034832-SNAPSHOT")
+
 val `collection-compat` = Def.setting("org.scala-lang.modules" %%% "scala-collection-compat" % "2.4.3")
 val `cats-core`         = Def.setting("org.typelevel"          %%% "cats-core"               % "2.6.0")
 val `circe-core`        = Def.setting("io.circe"               %%% "circe-core"              % "0.13.0")
@@ -232,6 +239,7 @@ val `scala-reflect`     = Def.setting("org.scala-lang"         %  "scala-reflect
 lazy val borer = project.in(file("."))
   .aggregate(`core-jvm`, `core-js`)
   .aggregate(`compat-akka`)
+  .aggregate(`compat-pekko`)
   .aggregate(`compat-cats-jvm`, `compat-cats-js`)
   .aggregate(`compat-circe-jvm`, `compat-circe-js`)
   .aggregate(`compat-scodec-jvm`, `compat-scodec-js`)
@@ -286,6 +294,22 @@ lazy val `compat-akka` = project
       `akka-actor`.value % "provided",
       `akka-stream`.value % "provided",
       `akka-http`.value % "provided",
+      utest.value)
+  )
+
+lazy val `compat-pekko` = project
+  .enablePlugins(AutomateHeaderPlugin)
+  .dependsOn(`core-jvm` % "compile->compile;test->test")
+  .dependsOn(`derivation-jvm` % "test->compile")
+  .settings(commonSettings)
+  .settings(releaseSettings)
+  .settings(mimaSettings)
+  .settings(
+    moduleName := "borer-compat-pekko",
+    libraryDependencies ++= Seq(
+      `pekko-actor`.value % "provided",
+      `pekko-stream`.value % "provided",
+      `pekko-http`.value % "provided",
       utest.value)
   )
 
@@ -413,7 +437,7 @@ lazy val benchmarks = project
 
 lazy val site = project
   .in(file("site"))
-  .dependsOn(`core-jvm`, `derivation-jvm`, `compat-akka`, `compat-cats-jvm`, `compat-circe-jvm`, `compat-scodec-jvm`)
+  .dependsOn(`core-jvm`, `derivation-jvm`, `compat-akka`, `compat-pekko`, `compat-cats-jvm`, `compat-circe-jvm`, `compat-scodec-jvm`)
   .enablePlugins(
     ParadoxPlugin,
     ParadoxMaterialThemePlugin,
@@ -424,7 +448,7 @@ lazy val site = project
   .settings(commonSettings)
   .settings(
     publish / skip := true,
-    libraryDependencies ++= Seq(`akka-actor`.value, `akka-stream`.value, `akka-http`.value, utest.value),
+    libraryDependencies ++= Seq(`akka-actor`.value, `akka-stream`.value, `akka-http`.value, `pekko-actor`.value, `pekko-stream`.value, `pekko-http`.value, utest.value),
 
     com.typesafe.sbt.SbtGit.GitKeys.gitRemoteRepo := scmInfo.value.get.connection.drop("scm:git:".length),
     ghpagesNoJekyll := true,
