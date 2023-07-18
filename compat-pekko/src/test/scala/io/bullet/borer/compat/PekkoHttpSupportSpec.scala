@@ -45,7 +45,7 @@ object PekkoHttpSupportSpec extends TestSuite {
 
   val tests = Tests {
 
-    import org.apache.pekkoHttp._
+    import pekkoHttp._
 
     "marshalling and unmarshalling (CBOR)" - {
       implicit def borerToEntityMarshaller[T: Encoder] = borerMarshaller(prefer = Cbor)
@@ -75,7 +75,7 @@ object PekkoHttpSupportSpec extends TestSuite {
 
     "prefer JSON on equal q-value (by default)" - {
       val foo = Foo("bar")
-      val acceptHeader = _root_.pekko.http.scaladsl.model.headers.Accept(
+      val acceptHeader = _root_.org.apache.pekko.http.scaladsl.model.headers.Accept(
         MediaRange.One(`application/json`, 1.0f),
         MediaRanges.`*/*`
       )
@@ -118,8 +118,9 @@ object PekkoHttpSupportSpec extends TestSuite {
     }
 
     "stream marshalling (JSON)" - {
-      val nums         = List(Num(1), Num(2), Num(3))
-      val acceptHeader = _root_.pekko.http.scaladsl.model.headers.Accept(MediaRange.One(`application/json`, 1.0f))
+      val nums = List(Num(1), Num(2), Num(3))
+      val acceptHeader =
+        _root_.org.apache.pekko.http.scaladsl.model.headers.Accept(MediaRange.One(`application/json`, 1.0f))
       Marshal(nums)
         .toResponseFor(HttpRequest(headers = acceptHeader :: Nil))
         .flatMap(_.entity.toStrict(1.second))

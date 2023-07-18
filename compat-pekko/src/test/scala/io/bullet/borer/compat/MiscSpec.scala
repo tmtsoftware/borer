@@ -17,7 +17,7 @@ import io.bullet.borer.derivation.ArrayBasedCodecs
 import utest._
 
 object MiscSpec extends AbstractBorerSpec {
-  import org.apache.pekko._
+  import pekko._
 
   def encode[T: Encoder](value: T): String   = toHexString(Cbor.encode(value).to[ByteString].result.toArray)
   def decode[T: Decoder](encoded: String): T = Cbor.decode(ByteString(hexBytes(encoded))).to[T].value
