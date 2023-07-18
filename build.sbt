@@ -70,6 +70,7 @@ lazy val commonSettings = Seq(
 
   // we need this resolver to let Travis CI find new release artifacts before they are available from Maven Central
   resolvers += Resolver.sonatypeRepo("staging"),
+  resolvers += "jitpack" at "https://jitpack.io",
 
   developers := List(
     Developer("sirthias", "Mathias Doenitz", "devnull@bullet.io", url("https://github.com/sirthias/"))
@@ -222,7 +223,8 @@ val `akka-http`         = Def.setting("com.typesafe.akka"      %%  "akka-http"  
 
 val `pekko-actor`        = Def.setting("org.apache.pekko" %%  "pekko-actor-typed"  % "1.0.0")
 val `pekko-stream`       = Def.setting("org.apache.pekko" %%  "pekko-stream"       % "1.0.0")
-val `pekko-http`         = Def.setting("org.apache.pekko" %%  "pekko-http"         % "1.0.0RC1")
+//val `pekko-http`         = Def.setting("org.apache.pekko" %%  "pekko-http"         % "1.0.0RC1")
+val `pekko-http`         = Def.setting("com.github.apache.incubator-pekko-http" %%  "pekko-http" % "1.0.0-RC1")
 
 val `collection-compat` = Def.setting("org.scala-lang.modules" %%% "scala-collection-compat" % "2.4.3")
 val `cats-core`         = Def.setting("org.typelevel"          %%% "cats-core"               % "2.6.0")
