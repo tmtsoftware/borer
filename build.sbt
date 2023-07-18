@@ -222,7 +222,7 @@ val `akka-http`         = Def.setting("com.typesafe.akka"      %%  "akka-http"  
 
 val `pekko-actor`        = Def.setting("org.apache.pekko" %%  "pekko-actor-typed"  % "1.0.0")
 val `pekko-stream`       = Def.setting("org.apache.pekko" %%  "pekko-stream"       % "1.0.0")
-val `pekko-http`         = Def.setting("org.apache.pekko" %%  "pekko-http"         % "0.0.0+4470-61034832-SNAPSHOT")
+val `pekko-http`         = Def.setting("org.apache.pekko" %%  "pekko-http"         % "1.0.0RC1")
 
 val `collection-compat` = Def.setting("org.scala-lang.modules" %%% "scala-collection-compat" % "2.4.3")
 val `cats-core`         = Def.setting("org.typelevel"          %%% "cats-core"               % "2.6.0")
