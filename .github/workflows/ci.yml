@@ -38,7 +38,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: ['8', '11', '17']
+        java: ['17']
         scala: ['3.3.0']
         platform: ['JVM', 'JS']
     steps:
