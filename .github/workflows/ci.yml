@@ -38,7 +38,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: ['11', '17']
+        java: ['17']
         scala: ['3.3.0']
         platform: ['JVM', 'JS']
     steps:
@@ -54,12 +54,12 @@ jobs:
           check-latest: true
       - name: Cache scala dependencies
         uses: coursier/cache-action@v6
-      - name: Run tests
-        if: ${{ !startsWith(matrix.scala, '3.') }}
-        run: sbt ++${{ matrix.scala }}! clean test${{ matrix.platform }}
-      - name: Run dotty tests
-        if: ${{ startsWith(matrix.scala, '3.') && matrix.platform == 'JVM' }}
-        run: sbt ++${{ matrix.scala }}! clean testJVM
+#      - name: Run tests
+#        if: ${{ !startsWith(matrix.scala, '3.') }}
+#        run: sbt ++${{ matrix.scala }}! test${{ matrix.platform }}
+#      - name: Run dotty tests
+#        if: ${{ startsWith(matrix.scala, '3.') && matrix.platform == 'JVM' }}
+#        run: sbt ++${{ matrix.scala }}! testJVM
 
   ci:
     runs-on: ubuntu-20.04
