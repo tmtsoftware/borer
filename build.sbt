@@ -48,7 +48,7 @@ lazy val commonSettings = Seq(
     // "-source:future",
     // "-explain",
     "-pagewidth:120",
-    "-Xtarget:8",
+//    "-Xtarget:8",
     "-Xfatal-warnings",
     "-Xcheck-macros",
     // "-Ydebug-error",
